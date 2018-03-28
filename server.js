@@ -1,7 +1,7 @@
 'use strict';
 
 const express = require('express'); 
-const bodyParser = require('bodyParser'); 
+const bodyParser = require('body-parser'); 
 const mongoose = require('mongoose');
 const morgan = require('morgan');
 mongoose.Promise = global.Promise;
@@ -93,10 +93,11 @@ app.delete('/posts/:id', (req, res) => {
     .findByIdAndRemove(req.params.id)
     .then(() => {
       res.status(204).json({ message: 'success' });
-     }) 
+      })
     .catch(err => {
       console.error(err);
       res.status(500).json({ error: 'Internal server error' });
+    });
 });
 
 app.use('*', function (req, res) {
@@ -106,7 +107,6 @@ app.use('*', function (req, res) {
 let server;
 
 function runServer(databaseUrl, port = PORT) {
-
   return new Promise((resolve, reject) => {
     mongoose.connect(databaseUrl, err => {
       if (err) {
