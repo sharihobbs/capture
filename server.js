@@ -1,7 +1,7 @@
 'use strict';
 
-const express = require('express'); 
-const bodyParser = require('body-parser'); 
+const express = require('express');
+const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
 mongoose.Promise = global.Promise;
@@ -9,7 +9,7 @@ mongoose.Promise = global.Promise;
 const { DATABASE_URL, PORT } = require('./config');
 const { BlogPost } = require('./models');
 
-const app = express(); 
+const app = express();
 
 app.use(bodyParser.json());
 app.use(morgan('common'));
@@ -43,7 +43,7 @@ app.get('/posts:id', (req, res) => {
 app.post('/posts', (req, res) => {
   const requiredFields = ['title', 'content', 'author'];
   for(let i = 0; i < requiredFields.length; i++) {
-    const field = requiredFields[i]; 
+    const field = requiredFields[i];
     if (!(field in req.body)) {
       const message = `Missing \`${field}\` in request body`;
       console.error(message);
@@ -55,7 +55,7 @@ app.post('/posts', (req, res) => {
     .create({
       title: req.body.title,
       content: req.body.content,
-      author: req.body.author,
+      author: req.body.author
     })
     .then(blogPost => res.status(201).json(blogPost.serialize()))
     .catch(err => {
@@ -84,8 +84,8 @@ app.put('/posts:id', (req, res) => {
 
   BlogPost
     .findByIdAndUpdate(req.params.id, { $set: toUpdate }, {new: true})
-    .then(updatedPost => res.status(204).end())
-    .catch(err => res.status(500).json({ message: 'Internal server error' }));
+    .then(() => res.status(204).end())
+    .catch(err => res.status(500).json({ message: `Internal server error: ${err}`}));
 });
 
 app.delete('/posts/:id', (req, res) => {

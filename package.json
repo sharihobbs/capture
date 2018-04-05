@@ -1,29 +1,31 @@
 {
-  "name": "blog-api-mongoose",
+  "name": "capture",
   "version": "1.0.0",
   "description": "",
-  "main": "models.js",
+  "main": "config.js",
   "directories": {
     "test": "test"
   },
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.3",
+    "mongoose": "^5.0.11",
+    "morgan": "^1.9.0",
+    "uuid": "^3.2.1"
+  },
+  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sharihobbs/blog-api-mongoose.git"
+    "url": "git+https://github.com/sharihobbs/capture.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/sharihobbs/blog-api-mongoose/issues"
+    "url": "https://github.com/sharihobbs/capture/issues"
   },
-  "homepage": "https://github.com/sharihobbs/blog-api-mongoose#readme",
-  "dependencies": {
-    "body-parser": "^1.18.2",
-    "express": "^4.16.3",
-    "mongoose": "^5.0.11",
-    "morgan": "^1.9.0"
-  }
+  "homepage": "https://github.com/sharihobbs/capture#readme"
 }
