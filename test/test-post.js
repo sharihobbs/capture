@@ -20,9 +20,9 @@ describe('Posts', function() {
 
   it('should return 200 status code on GET', function() {
     return chai.request(app)
-      .get('/')
-      .then(function(res) {
-        expect(res).to.have.status(200);
-        });
+    .get('/')
+    .then(function(res) {
+      expect(res).to.have.status(200);
       });
+    });
   });
