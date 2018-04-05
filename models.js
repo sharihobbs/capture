@@ -3,30 +3,26 @@
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
-const blogSchema =  mongoose.Schema({
-  title: {type: String, required: true},
-  content: {type: String, required: true},
-  author: {
-    firstName: String,
-    lastName: String
-   }, 
-  created: {type: Date, default: Date.now}
+const postSchema =  mongoose.Schema({
+  image: {type: String, required: true},
+  created: {type: Date, default: Date.now},
+  text: {type: String, required: true}
  });
- 
- blogSchema.virtual('authorString').get(function() {
-  return `${this.author.firstName} ${this.author.lastName}`.trim()});
 
-blogSchema.methods.serialize = function() {
+ // postSchema.virtual('authorString').get(function() {
+  // return `${this.author.firstName}
+  // ${this.author.lastName}`.trim()});
+
+postSchema.methods.serialize = function() {
   return {
     id: this._id,
-    title: this.title,
-    content: this.content,
-    author: this.authorString, 
-    created: this.created
+    image: this.image,
+    created: this.created,
+    text: this.text
   };
 }
 
-const BlogPost = mongoose.model('BlogPost', blogSchema);
+const Post = mongoose.model('Post', postSchema);
 
-module.exports = {BlogPost};
+module.exports = {Post};
 
