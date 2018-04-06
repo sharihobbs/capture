@@ -3,8 +3,8 @@
 const bodyParser = require('body-parser');
 const express = require('express');
 const morgan = require('morgan');
-var multer  = require('multer')
-var upload = multer({ dest: 'uploads/' })
+const multer  = require('multer')
+const upload = multer({ dest: 'uploads/' })
 
 // const { DATABASE_URL, PORT } = require('/config');
 // const { GratPost } = require('./models');
@@ -15,9 +15,14 @@ app.use(express.static('public'));
 app.use(morgan('common'));
 app.use(bodyParser.json());
 
-
 // app.use('*', function (req, res) {
 //   res.status(404).json({ message: 'Not Found' });
+// });
+
+// app.get('/api/protected', jwtAuth, (req, res) => {
+//   return res.json({
+//     data: 'rosebud'
+//   });
 // });
 
 app.get('/', (req, res) => {
@@ -36,7 +41,7 @@ app.get('/user', (req, res) => {
   res.sendFile(__dirname + '/public/sign-in.html');
 });
 
-app.post('/posts/:id', (req, res) => {
+app.post('/posts', (req, res) => {
   res.sendFile(__dirname + '/public/index.html');
 });
 
