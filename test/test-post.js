@@ -7,7 +7,6 @@ const expect = chai.expect;
 
 chai.use(chaiHttp);
 
-describe('Posts', function() {
   // Activate server before tests.
   // before(function() {
   //   return runServer();
@@ -18,11 +17,74 @@ describe('Posts', function() {
   //   return closeServer();
   // });
 
-  it('should return 200 status code on GET', function() {
+describe('GET Endpoints', function() {
+
+  it('should return 200 status code on GET index', function() {
     return chai.request(app)
     .get('/')
     .then(function(res) {
       expect(res).to.have.status(200);
       });
     });
+
+  it('should return 200 status code on GET posts', function() {
+    return chai.request(app)
+    .get('/posts')
+    .then(function(res) {
+      expect(res).to.have.status(200);
+      });
+    });
+
+  it('should return 200 status code on GET posts id', function() {
+    return chai.request(app)
+    .get('/posts/:id')
+    .then(function(res) {
+      expect(res).to.have.status(200);
+      });
+    });
   });
+
+
+describe('POST Endpoint', function() {
+
+  it('should return 200 status code on POST posts', function() {
+    return chai.request(app)
+    .post('/posts')
+    .then(function(res) {
+      expect(res).to.have.status(200);
+      });
+    });
+  });
+
+
+describe('PUT Endpoint', function() {
+
+  it('should return 200 status code on PUT posts id', function() {
+    return chai.request(app)
+    .put('/posts/:id')
+    .then(function(res) {
+      expect(res).to.have.status(200);
+      });
+    });
+  });
+
+
+describe('DELETE Endpoint', function() {
+
+  it('should return 200 status code on DELETE posts id', function() {
+    return chai.request(app)
+    .delete('/posts/:id')
+    .then(function(res) {
+      expect(res).to.have.status(200);
+      });
+    });
+  });
+
+
+
+
+
+
+
+
+
