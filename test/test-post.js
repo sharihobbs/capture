@@ -52,9 +52,9 @@ describe('Testing Endpoints', function() {
       });
     });
 
-  it('should return 200 status code on POST posts id', function() {
+  it('should return 200 status code on POST posts', function() {
     return chai.request(app)
-    .post('/posts/:id')
+    .post('/posts')
     .then(function(res) {
       expect(res).to.have.status(200);
       });
