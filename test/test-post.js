@@ -36,7 +36,7 @@ describe('Testing Endpoints', function() {
       });
     });
 
-  it('should return 200 status code on GET posts', function() {
+  it('should return 200 status code on GET posts id', function() {
     return chai.request(app)
     .get('/posts/:id')
     .then(function(res) {
@@ -44,7 +44,7 @@ describe('Testing Endpoints', function() {
       });
     });
 
-  it('should return 200 status code on GET posts', function() {
+  it('should return 200 status code on GET user', function() {
     return chai.request(app)
     .get('/user')
     .then(function(res) {
@@ -52,7 +52,7 @@ describe('Testing Endpoints', function() {
       });
     });
 
-  it('should return 200 status code on POST posts', function() {
+  it('should return 200 status code on POST posts id', function() {
     return chai.request(app)
     .post('/posts/:id')
     .then(function(res) {
@@ -60,7 +60,7 @@ describe('Testing Endpoints', function() {
       });
     });
 
-  it('should return 200 status code on POST posts', function() {
+  it('should return 200 status code on POST user', function() {
     return chai.request(app)
     .post('/user')
     .then(function(res) {
@@ -68,7 +68,15 @@ describe('Testing Endpoints', function() {
       });
     });
 
-  it('should return 200 status code on PUT posts', function() {
+  it('should return 200 status code on POST photo uploads', function() {
+    return chai.request(app)
+    .post('/photo/uploads')
+    .then(function(res) {
+      expect(res).to.have.status(200);
+      });
+    });
+
+  it('should return 200 status code on PUT posts id', function() {
     return chai.request(app)
     .put('/posts/:id')
     .then(function(res) {
@@ -76,7 +84,7 @@ describe('Testing Endpoints', function() {
       });
     });
 
-  it('should return 200 status code on DELETE posts', function() {
+  it('should return 200 status code on DELETE posts id', function() {
     return chai.request(app)
     .delete('/posts/:id')
     .then(function(res) {
@@ -84,7 +92,7 @@ describe('Testing Endpoints', function() {
       });
     });
 
-  it('should return 200 status code on DELETE posts', function() {
+  it('should return 200 status code on DELETE user', function() {
     return chai.request(app)
     .delete('/user')
     .then(function(res) {

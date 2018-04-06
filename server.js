@@ -3,6 +3,8 @@
 const bodyParser = require('body-parser');
 const express = require('express');
 const morgan = require('morgan');
+var multer  = require('multer')
+var upload = multer({ dest: 'uploads/' })
 
 // const { DATABASE_URL, PORT } = require('/config');
 // const { GratPost } = require('./models');
@@ -40,6 +42,10 @@ app.post('/posts/:id', (req, res) => {
 
 app.post('/user', (req, res) => {
   res.sendFile(__dirname + '/public/sign-in.html');
+});
+
+app.post('/photo/uploads', upload.single('image'), (req, res) => {
+  res.sendFile(__dirname + '/public/index.html');
 });
 
 app.put('/posts/:id', (req, res) => {
