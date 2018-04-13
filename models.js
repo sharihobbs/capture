@@ -3,15 +3,14 @@
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
+const moment = require('moment');
+
+
 const gratPostSchema =  mongoose.Schema({
   image: {type: String, required: true},
-  created: {type: Date, default: Date.now},
+  created: {type: String, default: moment(new Date(Date.now())).format('MMM Do YY')},
   text: {type: String, required: true}
  });
-
- // postSchema.virtual('authorString').get(function() {
-  // return `${this.author.firstName}
-  // ${this.author.lastName}`.trim()});
 
 gratPostSchema.methods.serialize = function() {
   return {
@@ -22,7 +21,6 @@ gratPostSchema.methods.serialize = function() {
   };
 }
 
-const GratPost = mongoose.model('GratPost', gratPostSchema);
+const Post = mongoose.model('Post', gratPostSchema);
 
-module.exports = {GratPost};
-
+module.exports = {Post};
