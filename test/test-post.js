@@ -84,6 +84,23 @@ describe('Posts API resource', function() {
         });
       });
     });
+
+    it('should return 200 status code on GET user', function() {
+      return chai.request(app)
+      .get('/user')
+      .then(function(res) {
+        expect(res).to.have.status(200);
+        });
+      });
+
+    it('should return 200 status code on GET photo upload', function() {
+      return chai.request(app)
+      .get('/upload')
+      .then(function(res) {
+        expect(res).to.have.status(200);
+        });
+      });
+
   });
 
   describe('POST endpoint', function() {
@@ -116,6 +133,15 @@ describe('Posts API resource', function() {
           expect(post.text).to.equal(newPost.text);
         });
     });
+
+    it('should return 200 status code on POST photo upload', function() {
+      return chai.request(app)
+      .post('/upload')
+      .then(function(res) {
+        expect(res).to.have.status(200);
+        });
+      });
+
   });
 
   describe('PUT endpoint', function() {
@@ -167,3 +193,12 @@ describe('Posts API resource', function() {
   });
 
 })
+
+
+
+
+  // ***********************
+
+
+
+

@@ -3,8 +3,21 @@
 const bodyParser = require('body-parser');
 const express = require('express');
 const morgan = require('morgan');
-// const multer  = require('multer')
-// const upload = multer({ dest: 'uploads/' })
+const multer  = require('multer')
+const path = require('path');
+//const ejs = require('ejs');
+
+const storage = multer.diskStorage({
+  destination: './public/uploads/',
+  filename: function(req, file, cb){
+    cb(null,file.fieldnam + '-' + Date.now() +
+    path.extname(file.originalname));
+  }
+});
+
+const upload = multer({
+  storage: storage
+}).single('myImage');
 
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
@@ -18,18 +31,33 @@ app.use(express.static('public'));
 app.use(morgan('common'));
 app.use(bodyParser.json());
 
+// unsure about the view engine param below
+app.set('view engine', 'ejs');
+
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/public/index.html');
 });
-
 
 app.get('/user', (req, res) => {
   res.sendFile(__dirname + '/public/sign-in.html');
 });
 
-// app.post('/photo/uploads', upload.single('image'), (req, res) => {
-//   res.sendFile(__dirname + '/public/index.html');
-// });
+app.get('/upload', (req, res) => {
+  res.sendFile(__dirname + '/public/upload.html');
+});
+
+app.post('/upload', (req, res) => {
+  upload(req, res, (err) => {
+    if(err){
+      res.render('index', {
+        msg: err
+      });
+    } else {
+      console.log(req.file);
+      res.send('test');
+    }
+  })
+})
 
 app.get('/api/posts', (req, res) => {
   Post
