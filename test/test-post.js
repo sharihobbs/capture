@@ -7,7 +7,7 @@ const moment = require('moment');
 const expect = chai.expect;
 
 const {Post} = require('../models');
-const {User} = require('../users/models');
+//const {User} = require('../users/models');
 const {app, runServer, closeServer} = require('../server');
 const {TEST_DATABASE_URL} = require('../config');
 
@@ -19,7 +19,7 @@ function seedData() {
   for (let i=1; i<=10; i++) {
     seedData.push({
       image: faker.image.imageUrl(),
-      created: moment(new Date(Date.now())).format('MMM Do YY'),
+      created: moment(new Date(Date.now())).format('MMM Do YYYY'),
       text: 'TEXT' + i
     });
   }
@@ -50,6 +50,7 @@ describe('Posts API resource', function() {
   });
 
   describe('GET endpoint', function() {
+
     it('should return all posts on GET', function() {
       let res;
       return chai.request(app)
@@ -60,13 +61,13 @@ describe('Posts API resource', function() {
       });
     });
 
-    it('should return 200 status code on GET user', function() {
-      return chai.request(app)
-      .get('/user/')
-      .then(function(res) {
-        expect(res).to.have.status(200);
-      });
-    });
+    // it('should return 200 status code on GET user', function() {
+    //   return chai.request(app)
+    //   .get('/user/')
+    //   .then(function(res) {
+    //     expect(res).to.have.status(200);
+    //   });
+    // });
 
     it('should return JSON object on GET', function() {
       return chai.request(app)
@@ -84,73 +85,48 @@ describe('Posts API resource', function() {
       });
     });
 
-    it('should return 200 status code on GET user', function() {
-      return chai.request(app)
-      .get('/user')
-      .then(function(res) {
-        expect(res).to.have.status(200);
-        });
-      });
-
-    it('should return 200 status code on GET photo upload', function() {
-      return chai.request(app)
-      .get('/upload')
-      .then(function(res) {
-        expect(res).to.have.status(200);
-      });
-    });
-  });
+    // it('should return 200 status code on GET user', function() {
+    //   return chai.request(app)
+    //   .get('/user')
+    //   .then(function(res) {
+    //     expect(res).to.have.status(200);
+    //     });
+    //   });
+   })
 
   describe('POST endpoint', function() {
-    it('should add a new gratitude post on POST', function() {
-      const newPost = {
-        image: faker.image.imageUrl(),
-        created: moment(new Date(Date.now())).format('MMM Do YY'),
-        text: 'NEW POST'
-      };
 
+    it('should add a new gratitude post on POST', function() {
       return chai.request(app)
       .post('/posts')
-      .send(newPost)
-      .then(function(res) {
-        expect(res).to.have.status(201);
-        expect(res).to.be.json;
-        expect(res.body).to.be.a('object');
-        expect(res.body).to.include.keys('id', 'image', 'created', 'text');
-        expect(res.body.image).to.equal(newPost.image);
-        expect(res.body.id).to.not.be.null;
-        expect(res.body.created).to.equal(newPost.created);
-        expect(res.body.text).to.equal(newPost.text);
-        return Post.findById(res.body.id)
-        .then(function(post) {
-          expect(post.image).to.equal(newPost.image);
-          expect(post.created).to.equal(newPost.created);
-          expect(post.text).to.equal(newPost.text);
-        })
-      })
-    });
-
-    it('should return 200 status code on POST photo upload', function() {
-      return chai.request(app)
-      .post('/upload')
+      .type('form')
+      .field('text', 'NEW POST')
+      .attach('postImg', './test/test_image.JPG', 'test_image.JPG')
       .then(function(res) {
         expect(res).to.have.status(200);
-      });
-    });
-  });
+        return Post.find({text: 'NEW POST'})
+        .then(function(posts) {
+          expect(posts).to.have.length(1)
+          expect(posts[0].image).to.include('test_image.JPG')
+          expect(posts[0].text).to.equal('NEW POST')
+          expect(posts[0].created).to.not.be.null
+        })
+      })
+    })
+  })
 
-  describe('PUT endpoint', function() {
+  describe('PATCH endpoint', function() {
     it('should update single post on PUT posts id', function() {
       const updateData = {
         image: faker.image.imageUrl(),
-        created: moment(new Date(Date.now())).format('MMM Do YY'),
+        created: moment(new Date(Date.now())).format('MMM Do YYYY'),
         text: 'UPDATED_TEXT'
       };
       return Post.findOne()
       .then(function (post) {
         updateData.id = post.id;
         return chai.request(app)
-        .put(`/posts/${post.id}`)
+        .patch(`/posts/${post.id}`)
         .send(updateData)
         .then(function(res) {
           expect(res).to.have.status(204);
@@ -159,11 +135,11 @@ describe('Posts API resource', function() {
             expect(post.image).to.equal(updateData.image);
             expect(post.created).to.equal(updateData.created);
             expect(post.text).to.equal(updateData.text);
-          })
-        })
-      })
-    })
-  });
+          });
+        });
+      });
+    });
+  })
 
   describe('DELETE endpoint', function() {
     it('should delete a single post on DELETE posts id', function() {
@@ -171,7 +147,8 @@ describe('Posts API resource', function() {
       return Post.findOne()
       .then(_post => {
         post = _post;
-        return chai.request(app).delete(`/posts/${post.id}`)
+        return chai.request(app)
+        .delete(`/posts/${post.id}`)
         .then(res => {
           expect(res).to.have.status(204);
           return Post.findById(post.id)
@@ -181,5 +158,5 @@ describe('Posts API resource', function() {
         });
       });
     });
-  });
+  })
 })

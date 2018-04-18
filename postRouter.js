@@ -3,12 +3,44 @@
 const express = require('express');
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
+
 const router = express.Router();
 const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
-const _ = require('lodash')
+const multer  = require('multer');
+const path = require('path');
+const moment = require('moment');
 
 const {Post} = require('./models');
+
+// Multer storage
+const storage = multer.diskStorage({
+  destination: function (req, file, callback) {
+    callback(null, './public/uploads/');
+  },
+  filename: function(req, file, callback) {
+    callback(null, Date.now()+file.originalname);
+  }
+});
+
+const upload = multer({
+  storage: storage,
+  //limits: {fileSize: 1000000},
+  fileFilter: function(req, file, callback) {
+    checkFileType(file, callback);
+  }
+}).single('postImg');
+
+function checkFileType(file, callback) {
+  const filetypes = /jpeg|jpg|png|gif/;
+  const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
+  const mimetype = filetypes.test(file.mimetype);
+  if(mimetype && extname) {
+    return callback(null, true);
+  } else {
+    callback('Error: Images Only!');
+  }
+}
 
 // GET Endpoints
 router.get('/', (req, res) => {
@@ -23,77 +55,53 @@ router.get('/', (req, res) => {
     });
 });
 
+router.get('/:id', function (req, res) {
+  Post
+    .findById(req.params.id, function (err, post) {
+      if (err) return res.status(500).send('something went wrong trying to find this post.');
+      if (!post) return res.status(404).send('no post found.');
+      res.status(200).send(post);
+    });
+});
+
 // POST Endpoints
-router.post('/', jsonParser, (req, res) => {
-  const requiredFields = ['image', 'created', 'text'];
-  Object.keys(req.body).forEach(field => {
-    if (!_.includes(requiredFields, field)) {
-      const message = `Missing \`${field}\` in request body`;
-      console.error(message);
-      return res.status(400).send(message);
-    }
-  })
+router.post('/', upload, (req, res) => {
+  if (!req.body || !req.body.text || !req.file) {
+    const message = `Missing text and/or file in request body`;
+    console.error(message);
+    return res.status(400).send(message);
+  }
+
   Post.create({
-    image: req.body.image,
-    created: req.body.created,
+    image: req.file.path,
+    created: moment(new Date(Date.now())).format('MMM Do YYYY'),
     text: req.body.text
   })
-  .then(post => res.status(201).json(post.serialize()))
+  .then(res.redirect('/'))
   .catch(err => {
     console.error(err);
     res.status(500).json({ error: 'Something went wrong' });
   });
 });
 
-// PUT Endpoints
-router.put('/:id', jsonParser, (req, res) => {
-  const requiredFields = ['id', 'image', 'created', 'text'];
-  for (let i=0; i<requiredFields.length; i++) {
-    const field = requiredFields[i];
-    if (!(field in req. body)) {
-      const message = `Missing \`${field}\` in request body`
-      console.error(message);
-      return res.status(400).send(message);
-    }
-  }
-  if (req.params.id !== req.body.id) {
-    const message = (
-      `Request path id (${req.params.id}) and request body id`
-      `(${req.body.id}) must match`);
+// PATCH Endpoints
+router.patch('/:id', jsonParser, (req, res) => {
+  if (!req.body.text) {
+    const message = `Missing text in request body`;
     console.error(message);
     return res.status(400).send(message);
   }
-  console.log(`Updating shopping list item \`${req.params.id}\``);
-  return Post.update({
-    id: req.params.id,
-    image: req.body.image,
-    created: req.body.created,
-    text: req.body.text
+  console.log(`Updating post\`${req.params.id}\``);
+  return Post.findByIdAndUpdate(req.params.id, {
+    $set: {
+      text: req.body.text
+    }
   })
   .then(result => {
     console.log(`result: ${JSON.stringify(result, null, 2)}`)
     return res.status(204).end();
   })
 });
-
-// router.put('/:id', jsonParser, (req, res) => {
-//   if (!(req.params.id && req.body.id && req.params.id === req.body.id)) {
-//     res.status(400).json({
-//       error: 'Request path id and request body id values must match'
-//     });
-//   }
-//   const updated = {};
-//   const updateableFields = ['image', 'created', 'text'];
-//   updateableFields.forEach(field => {
-//     if (field in req.body) {
-//       updated[field] = req.body[field];
-//     }
-//   });
-//   Post
-//   .findByIdAndUpdate(req.params.id, { $set: updated }, { new: true })
-//   .then(updatedPost => res.status(204).end())
-//   .catch(err => res.status(500).json({ message: 'Something went wrong' }));
-// });
 
 // DELETE Endpoints
 router.delete('/:id', (req, res) => {
