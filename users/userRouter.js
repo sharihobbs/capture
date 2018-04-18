@@ -1,5 +1,31 @@
-// 'use strict';
+// 'use strict'
+
 // const express = require('express');
+// const mongoose = require('mongoose');
+// mongoose.Promise = global.Promise;
+// const router = express.Router();
+// const config = require('../config');
+// const path = require('path');
+// const bodyParser = require('body-parser');
+// const jsonParser = bodyParser.json();
+
+// const {User} = require('./models');
+
+
+// // GET Endpoints
+// router.get('/', (req, res) => {
+//   res.sendFile(path.join(__dirname, '../public/sign-in.html'));
+// });
+
+// // Export router for use in server.js
+// module.exports = {router};
+
+
+
+
+
+// 'use strict';
+// //const express = require('express');
 // const bodyParser = require('body-parser');
 
 // const {User} = require('./models');

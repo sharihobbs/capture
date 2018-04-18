@@ -1,0 +1,11 @@
+* body {
+  box-sizing: border-box;
+}
+
+.hidden {
+  display: none;
+}
+
+.gratitudes {
+  margin-top: 20px;
+}

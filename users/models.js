@@ -1,37 +1,30 @@
-'use strict';
-const bcrypt = require('bcryptjs');
-const mongoose = require('mongoose');
+// 'use strict'
 
-mongoose.Promise = global.Promise;
+// const bcrypt = require('bcryptjs');
+// const mongoose = require('mongoose');
 
-const UserSchema = mongoose.Schema({
-  email: {
-    type: String,
-    required: true,
-    unique: true
-  },
-  password: {
-    type: String,
-    required: true
-  }
-});
+// mongoose.Promise = global.Promise;
 
-// UserSchema.methods.serialize = function() {
-//   return {
-//     username: this.username || '',
-//     firstName: this.firstName || '',
-//     lastName: this.lastName || ''
-//   };
+// const UserSchema = mongoose.Schema({
+//   email: {
+//     type: String,
+//     required: true,
+//     unique: true
+//   },
+//   password: {
+//     type: String,
+//     required: true
+//   }
+// });
+
+// UserSchema.methods.validatePassword = function(password) {
+//   return bcrypt.compare(password, this.password);
 // };
 
-UserSchema.methods.validatePassword = function(password) {
-  return bcrypt.compare(password, this.password);
-};
+// UserSchema.statics.hashPassword = function(password) {
+//   return bcrypt.hash(password, 10);
+// };
 
-UserSchema.statics.hashPassword = function(password) {
-  return bcrypt.hash(password, 10);
-};
+// const User = mongoose.model('User', UserSchema);
 
-const User = mongoose.model('User', UserSchema);
-
-module.exports = {User};
+// module.exports = {User};
