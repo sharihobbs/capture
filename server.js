@@ -1,18 +1,21 @@
 'use strict'
 
+require('dotenv').config();
 const express = require('express');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 const passport = require('passport');
-require('dotenv').config();
+
 
 const {DATABASE_URL, PORT} = require('./config');
 const app = express();
 
 const {router: postRouter} = require('./postRouter');
 const {router: usersRouter} = require('./users');
-const {router: authRouter, localStrategy, jwtStrategy} = require('./auth');
+const {router: authRouter} = require('./auth');
+const {localStrategy, jwtStrategy} = require('./auth/strategies');
+
 
 app.use(express.static('public'));
 app.use(morgan('common'));
