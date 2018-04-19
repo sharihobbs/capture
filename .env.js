@@ -1,2 +1,2 @@
-// JWT_SECRET='string_of_my_choosing'
-// DATABASE_URL=mongodb:USERNAME:PASSWORD@WHERE.mlab.com:PORT/DB-NAME
+JWT_SECRET='capture_gratitude'
+DATABASE_URL=mongodb://capture-db-user:dbuserpw!@ds139929.mlab.com:39929/capture-db;
