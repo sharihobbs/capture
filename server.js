@@ -1,28 +1,19 @@
 'use strict'
 
-require('dotenv').config();
 const express = require('express');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
-const passport = require('passport');
-
 
 const {DATABASE_URL, PORT} = require('./config');
 const app = express();
 
 const {router: postRouter} = require('./postRouter');
-const {router: usersRouter} = require('./users');
-const {router: authRouter} = require('./auth');
-const {localStrategy, jwtStrategy} = require('./auth/strategies');
-
 
 app.use(express.static('public'));
 app.use(morgan('common'));
 
 app.use('/posts', postRouter);
-app.use('/api/users', usersRouter);
-app.use('/api/auth', authRouter);
 
 app.use(function (req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
@@ -34,30 +25,15 @@ app.use(function (req, res, next) {
   next();
 });
 
-passport.use(localStrategy);
-passport.use(jwtStrategy);
-
-const jwtAuth = passport.authenticate('jwt', { session: false });
-
-// A protected endpoint which needs a valid JWT to access it
-// // app.get('/api/protected', jwtAuth, (req, res) => {
-//   return res.json({
-//     data: 'rosebud'
-//   });
-// });
-
-// Endpoint for home page - show all posts
-app.get('/', jwtAuth, (req, res) => {
+app.get('/', (req, res) => {
   res.sendFile(__dirname + '/public/home.html');
 });
 
-app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/public/login.html');
-});
 
 app.get('/public/uploads/:filename', (req, res) => {
   res.sendFile(__dirname + `/public/uploads/${req.params.filename}`);
 });
+
 
 // **********************
 // Server functions below...

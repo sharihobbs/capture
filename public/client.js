@@ -45,6 +45,7 @@ function displayAddNew() {
             <br>
             <label for="new-gratitude-text">What are you grateful for today?</label><br>
             <textarea maxlength="140" rows="4" cols="50" name="text" aria-required="true"/></textarea><br><br>
+            <br>
             <button class="submit-button" type="submit">Save</button>
             <button class="cancel-button" type="reset">Cancel</button>
           </form>
@@ -98,6 +99,7 @@ function handleSingle() {
     console.log('Open button clicked');
     const gratId = $(this).closest('.grat-card').find('.grat-id').text();
     console.log('gratId:', gratId);
+    $('.add-new').addClass('hidden');
     getSinglePost(gratId);
   });
 }
