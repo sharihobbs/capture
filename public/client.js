@@ -1,6 +1,6 @@
 'use strict'
 
-const POSTS_URL = 'http://localhost:8080/posts'
+const POSTS_URL = 'https://cryptic-plateau-80384.herokuapp.com/posts'
 
 function getRecentGratitudes(callbackFn) {
   // getJSON call to get posts
