@@ -1,10 +1,8 @@
 'use strict'
 
-const POSTS_URL = 'https://cryptic-plateau-80384.herokuapp.com/posts'
-
 function getRecentGratitudes(callbackFn) {
   // getJSON call to get posts
-  $.getJSON(POSTS_URL, function(data) {
+  $.getJSON('/posts', function(data) {
     callbackFn(data)
   })
 }
