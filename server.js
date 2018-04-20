@@ -9,24 +9,31 @@ const {DATABASE_URL, PORT} = require('./config');
 const app = express();
 
 const {router: postRouter} = require('./postRouter');
-// const {router: userRouter} = require('./users/userRouter');
-// const {router: authRouter} = require('./auth/authRouter');
 
 app.use(express.static('public'));
 app.use(morgan('common'));
 
 app.use('/posts', postRouter);
-// app.use('/user', userRouter);
-// app.use('/auth', authRouter);
 
-// Endpoint for home page - show all posts
+app.use(function (req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Content-Type,Authorization');
+  res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE');
+  if (req.method === 'OPTIONS') {
+    return res.send(204);
+  }
+  next();
+});
+
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/public/home.html');
 });
 
+
 app.get('/public/uploads/:filename', (req, res) => {
   res.sendFile(__dirname + `/public/uploads/${req.params.filename}`);
 });
+
 
 // **********************
 // Server functions below...

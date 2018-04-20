@@ -7,7 +7,6 @@ const moment = require('moment');
 const expect = chai.expect;
 
 const {Post} = require('../models');
-//const {User} = require('../users/models');
 const {app, runServer, closeServer} = require('../server');
 const {TEST_DATABASE_URL} = require('../config');
 
