@@ -70,7 +70,7 @@ router.get('/', (req, res) => {
     .find()
     .then(posts => {
       res.json(
-        _.orderBy(posts, [post => moment(post.created, 'MMM Do YYYY')], ['desc'])
+        _.orderBy(posts, post => moment(post.created, 'MMM Do YYYY'), 'desc')
          .map(post => post.serialize())
       );
     })
