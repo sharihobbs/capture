@@ -4,6 +4,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
+const _ = require('lodash');
 const router = express.Router();
 const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
@@ -12,7 +13,7 @@ const path = require('path');
 const moment = require('moment');
 const cloudinary = require('cloudinary');
 const cloudinaryStorage = require('multer-storage-cloudinary');
-const config = require('./config')
+const config = require('./config');
 
 const {Post} = require('./models');
 
@@ -68,7 +69,10 @@ router.get('/', (req, res) => {
   Post
     .find()
     .then(posts => {
-      res.json(posts.map(post => post.serialize()));
+      res.json(
+        _.orderBy(posts, [post => moment(post.created, 'MMM Do YYYY')], ['desc'])
+         .map(post => post.serialize())
+      );
     })
     .catch(err => {
       console.error(err);
@@ -94,7 +98,7 @@ router.post('/', upload.single('postImg'), (req, res) => {
   }
   Post.create({
     image: req.file.url || req.file.path,
-    created: moment(new Date(Date.now())).format('MMM Do YYYY'),
+    created: moment().format('MMM Do YYYY'),
     text: req.body.text
   })
   .then(res.redirect('/'))
