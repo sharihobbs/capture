@@ -10,26 +10,13 @@ const jsonParser = bodyParser.json();
 const multer  = require('multer');
 const path = require('path');
 const moment = require('moment');
+const cloudinary = require('cloudinary');
+const cloudinaryStorage = require('multer-storage-cloudinary');
+const config = require('./config')
 
 const {Post} = require('./models');
 
-// Multer storage
-const storage = multer.diskStorage({
-  destination: function (req, file, callback) {
-    callback(null, './public/uploads/');
-  },
-  filename: function(req, file, callback) {
-    callback(null, Date.now()+file.originalname);
-  }
-});
-
-const upload = multer({
-  storage: storage,
-  //limits: {fileSize: 1000000},
-  fileFilter: function(req, file, callback) {
-    checkFileType(file, callback);
-  }
-}).single('postImg');
+let upload
 
 function checkFileType(file, callback) {
   const filetypes = /jpeg|jpg|png|gif/;
@@ -40,6 +27,41 @@ function checkFileType(file, callback) {
   } else {
     callback('Error: Images Only!');
   }
+}
+
+if (config.cloudinary
+    && config.cloudinary.apiKey
+    && config.cloudinary.apiSecret) {
+  cloudinary.config({
+    cloud_name: config.cloudinary.cloudName,
+    api_key: config.cloudinary.apiKey,
+    api_secret: config.cloudinary.apiSecret
+  });
+  // Cloudinary storage
+  upload = multer({ storage: cloudinaryStorage({
+      cloudinary: cloudinary,
+      folder: 'uploads',
+      allowedFormats: ['jpg', 'png', 'jpeg', 'gif'],
+      filename: function(req, file, callback) {
+       callback(undefined, Date.now()+file.originalname)
+      }
+    })
+  }).single('postImg')
+} else {
+  // Local disk storage
+  upload = multer({
+    storage: multer.diskStorage({
+      destination: function (req, file, callback) {
+        callback(null, './public/uploads/');
+      },
+      filename: function(req, file, callback) {
+        callback(null, Date.now()+file.originalname);
+      }
+    }),
+    fileFilter: function(req, file, callback) {
+      checkFileType(file, callback);
+    }
+  }).single('postImg')
 }
 
 // GET Endpoints
@@ -71,9 +93,8 @@ router.post('/', upload, (req, res) => {
     console.error(message);
     return res.status(400).send(message);
   }
-
   Post.create({
-    image: req.file.path,
+    image: req.file.url || req.file.path,
     created: moment(new Date(Date.now())).format('MMM Do YYYY'),
     text: req.body.text
   })
