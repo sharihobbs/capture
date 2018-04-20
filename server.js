@@ -16,7 +16,6 @@ const {router: usersRouter} = require('./users');
 const {router: authRouter} = require('./auth');
 const {localStrategy, jwtStrategy} = require('./auth/strategies');
 
-
 app.use(express.static('public'));
 app.use(morgan('common'));
 
@@ -46,18 +45,20 @@ const jwtAuth = passport.authenticate('jwt', { session: false });
 //   });
 // });
 
-// Endpoint for home page - show all posts
-app.get('/', jwtAuth, (req, res) => {
-  res.sendFile(__dirname + '/public/home.html');
-});
-
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/public/login.html');
 });
 
+//user must be logged in
+app.get('/home', jwtAuth, (req, res) => {
+  res.sendFile(__dirname + '/public/home.html');
+});
+
+
 app.get('/public/uploads/:filename', (req, res) => {
   res.sendFile(__dirname + `/public/uploads/${req.params.filename}`);
 });
+
 
 // **********************
 // Server functions below...

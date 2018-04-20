@@ -3,23 +3,24 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width initial-scale=1.0">
-  <title>Capture | Sign-In</title>
-  <link href="sign-in.css" rel="stylesheet" type="text/css" />
+  <title>Capture | Log in</title>
+  <link href="login.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
   <main>
-    <h1>Capture</h1>
+    <h3>Please log in...</h3>
     <div class="form-container">
-      <form role="form" action="/signup" method="post" class="signup-login">
+      <!-- <form id="login-form" role="form" action="/api/auth/login" method="post" class="login"> -->
+      <form id="login-form" role="form" class="login">
         <label for="user-email">Username</label><br>
-        <input type="username" placeholder="Your Username" name="username" id="username" aria-required="true"/><br>
-        <label for="user-password">Password</label><br>
-        <input placeholder="1234passw0rd" type="password" name="user-password" id="user-password" aria-required="true"/><br><br>
-        <button type="submit">Sign in</button>
+        <input type="username" class="username" placeholder="Your Username" name="username" id="username" aria-required="true"/><br>
+        <label for="password">Password</label><br>
+        <input type="password" class="password" placeholder="1234passw0rd" name="password" id="password" aria-required="true"/><br><br>
+        <button class="login-button" type="submit">Log in</button>
       </form>
     </div>
     <div>
-      <p>Demo Account Username: Grateful | Password: GratefulToo</p>
+      <p>Demo Account | Username: Grateful | Password: GratefulToo</p>
     </div>
   </main>
   <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
