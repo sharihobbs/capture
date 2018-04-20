@@ -16,8 +16,6 @@ const config = require('./config')
 
 const {Post} = require('./models');
 
-let upload
-
 function checkFileType(file, callback) {
   const filetypes = /jpeg|jpg|png|gif/;
   const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
@@ -29,6 +27,17 @@ function checkFileType(file, callback) {
   }
 }
 
+// Default upload multer disk storage
+let storage = multer.diskStorage({
+  destination: function (req, file, callback) {
+    callback(null, './public/uploads/');
+  },
+  filename: function(req, file, callback) {
+    callback(null, Date.now()+file.originalname);
+  }
+})
+
+// use upload cloudinary storage if possible
 if (config.cloudinary
     && config.cloudinary.apiKey
     && config.cloudinary.apiSecret) {
@@ -37,32 +46,22 @@ if (config.cloudinary
     api_key: config.cloudinary.apiKey,
     api_secret: config.cloudinary.apiSecret
   });
-  // Cloudinary storage
-  upload = multer({ storage: cloudinaryStorage({
-      cloudinary: cloudinary,
-      folder: 'uploads',
-      allowedFormats: ['jpg', 'png', 'jpeg', 'gif'],
-      filename: function(req, file, callback) {
-       callback(undefined, Date.now()+file.originalname)
-      }
-    })
-  }).single('postImg')
-} else {
-  // Local disk storage
-  upload = multer({
-    storage: multer.diskStorage({
-      destination: function (req, file, callback) {
-        callback(null, './public/uploads/');
-      },
-      filename: function(req, file, callback) {
-        callback(null, Date.now()+file.originalname);
-      }
-    }),
-    fileFilter: function(req, file, callback) {
-      checkFileType(file, callback);
+  storage = cloudinaryStorage({
+    cloudinary: cloudinary,
+    folder: 'uploads',
+    allowedFormats: ['jpg', 'png', 'jpeg', 'gif'],
+    filename: function(req, file, callback) {
+     callback(undefined, Date.now()+file.originalname)
     }
-  }).single('postImg')
+  })
 }
+
+const upload = multer({
+  storage: storage,
+  fileFilter: function(req, file, callback) {
+    checkFileType(file, callback)
+  }
+})
 
 // GET Endpoints
 router.get('/', (req, res) => {
@@ -87,7 +86,7 @@ router.get('/:id', function (req, res) {
 });
 
 // POST Endpoints
-router.post('/', upload, (req, res) => {
+router.post('/', upload.single('postImg'), (req, res) => {
   if (!req.body || !req.body.text || !req.file) {
     const message = `Missing text and/or file in request body`;
     console.error(message);
