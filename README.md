@@ -2,6 +2,9 @@
 
 Capture was inspired by the mindfulness practice of recognizing moments of gratitude throughout one's day. Keeping a log of what stirs joy or contentment is the best way to stay in a state of gratitude in even the most mundane moments.
 
+## Link to View Live
+https://cryptic-plateau-80384.herokuapp.com/
+
 ## Functionalities
 
 Users may scroll through all posts made to Capture in descending chronological order. All posts are visible to all visitors to the site. When the mood strikes, the user may click on the Create a Gratitude button on the home page to open the post creation page. After uploading a photo and writing a short statement of gratitude, they may click save to post it to the site. A timestamp is automatically applied to their post. If a revision is needed, the user may click on the open button present on each post, edit their text and update. 
