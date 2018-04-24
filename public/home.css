@@ -1,23 +1,89 @@
 * body {
   box-sizing: border-box;
+  font-family: 'Varela Round', sans-serif;
+}
+
+body {
+  background-color: #003366;
 }
 
 .hidden {
   display: none;
 }
 
-.gratitudes {
+button {
+  height: 25px;
+  border: 1px solid lightgrey;
+  border-radius: 5px;
+}
+
+.logo {
+  width: 100px;
+  position: absolute;
+  margin-left: 15px;
+}
+
+.head-tag {
+  margin-left: 130px;
+}
+
+.headline {
+  color: white;
+  margin-bottom: 5px;
+}
+
+.tagline {
+  color: white;
   margin-top: 0px;
+}
+
+.add-new {
+  font-size: 14px;
+}
+
+.gratitudes {
+  margin-top: 10px;
+}
+
+.new-gratitude {
+  color: white;
 }
 
 .grat-card {
   width: 250px;
   height: 450px;
+  background-color: white;
   margin: 0px 10px 10px 10px;
   float: left;
   border: 1px solid lightgrey;
   border-radius: 5px;
   padding: 15px;
+}
+
+#single-grat {
+  width: 250px;
+  height: 450px;
+  background-color: white;
+  margin: 0px 10px 10px 10px;
+  float: left;
+  border: 1px solid lightgrey;
+  border-radius: 5px;
+  padding: 15px;
+}
+
+.editor {
+  width: 250px;
+  height: 450px;
+  background-color: white;
+  margin: 0px 10px 10px 10px;
+  float: left;
+  border: 1px solid lightgrey;
+  border-radius: 5px;
+  padding: 15px;
+}
+
+.grat-text {
+  width: 230px;
 }
 
 .img-container {
@@ -33,3 +99,8 @@
   object-fit: cover;
 }
 
+#thumbnail {
+  width: 250px;
+  height: 250px;
+  object-fit: cover;
+}
