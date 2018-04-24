@@ -6,13 +6,17 @@
   <title>Capture</title>
   <link href="home.css" rel="stylesheet" type="text/css"/>
   <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet">
 </head>
 <body>
   <main>
-    <h1>Capture - A photo gratitude journal</h1>
-    <p class="tagline">Share what you're grateful for today and everyday.</p>
-    <div class="add-new-container">
+    <img class="logo" src="https://user-images.githubusercontent.com/29738609/39163373-0adf7cfc-472f-11e8-9ff1-b786188ea24f.png" alt="Capture Logo">
+    <div class="head-tag">
+      <h1 class="headline">Capture - A photo gratitude journal</h1>
+      <p class="tagline">Share what you're grateful for today and everyday.</p>
+      <div class="add-new-container">
         <button class="add-new">Create a Gratitude</button>
+      </div>
     </div>
     <br>
     <div class="new-container hidden"></div>
@@ -23,6 +27,7 @@
     <div class="editor hidden"></div>
   </main>
   <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
   <script src="client.js"></script>
 </body>
 </html>
