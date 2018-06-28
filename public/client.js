@@ -180,6 +180,45 @@ function editPost(id, text) {
   })
 }
 
+<<<<<<< Updated upstream
+=======
+function handleCancel() {
+  // handle click for deleting whole posts
+  $('.single-post').on('click', '.cancel-button', function(event) {
+    event.preventDefault()
+    location.reload();
+  })
+}
+
+function handleAddCancel() {
+  // handle click for canceling new post
+  $('.new-gratitude').on('click', '.cancel-button', function(event) {
+    event.preventDefault()
+    location.reload();
+  })
+}
+
+
+function newGratError() {
+  // display error message if required fields are blank
+  $('#form').submit(function() {
+    if($.trim($('.grat-text').val()) === '') {
+      swal('Please enter your gratitude text.')
+      return false;
+    }
+  })
+}
+
+function handleEditCancel() {
+  // handle click for editing posts
+  $('.editor').on('click', '.update-cancel-button', function(event) {
+    event.preventDefault()
+    $('.editor').addClass('hidden');
+    $('.single-post').removeClass('hidden');
+  })
+}
+
+>>>>>>> Stashed changes
 function handleClient() {
   addNewGratitude();
   displayAddNew();
